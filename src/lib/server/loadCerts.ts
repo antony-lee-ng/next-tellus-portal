@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync } from "fs";
 import { extname, join } from "path";
+import { logger } from "../logger";
 
 const readFileInDir = (path: string, extNames: string[]) => {
   const dir = readdirSync(path);
@@ -18,8 +19,16 @@ const readFileInDir = (path: string, extNames: string[]) => {
 };
 
 export const loadCerts = () => {
-  return {
-    key: readFileInDir(join(process.cwd(), "certs", "key"), [".key", ".pem"]),
-    cert: readFileInDir(join(process.cwd(), "certs", "cert"), [".cer", ".crt"]),
-  };
+  try {
+    return {
+      key: readFileInDir(join(process.cwd(), "certs", "key"), [".key", ".pem"]),
+      cert: readFileInDir(join(process.cwd(), "certs", "cert"), [
+        ".cer",
+        ".crt",
+      ]),
+    };
+  } catch (error) {
+    logger.error("Could not load certs, double check your cert files");
+    throw error;
+  }
 };
