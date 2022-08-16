@@ -1,6 +1,5 @@
 import axios, { AxiosError, AxiosInstance } from "axios";
 import { join } from "path";
-import { ZodError } from "zod";
 import { loadConfig } from "./config";
 import { logger } from "./logger";
 import { queueHandler } from "./QueueHandler";
@@ -42,19 +41,14 @@ export class TellusAPI {
       return data;
     } catch (err) {
       logger.error((err as Error).message);
-      if (err instanceof ZodError) {
-        logger.error("ZodError");
-        throw new Error("Wrong data format");
+      // WARNING: This can trigger recursive
+      if (addToQueueIfFail) {
+        await queueHandler.add(formData);
+        throw new Error("Added to queue");
       } else {
-        // WARNING: This can trigger recursive
-        if (addToQueueIfFail) {
-          await queueHandler.add(formData);
-          throw new Error("Added to queue");
-        } else {
-          const errMsg = `Failed to create call ${(err as Error).message}`;
-          logger.error(errMsg);
-          throw new Error(errMsg);
-        }
+        const errMsg = `Failed to create call ${(err as Error).message}`;
+        logger.error(errMsg);
+        throw new Error(errMsg);
       }
     }
   }

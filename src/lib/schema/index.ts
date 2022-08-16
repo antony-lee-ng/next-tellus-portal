@@ -1,61 +1,19 @@
-import { z } from "zod";
 import * as yup from "yup";
 
-export const configSchema = z.strictObject({
-  ENDPOINT: z.string({
-    required_error: "This value is required, please check the .env config",
-  }),
-  USERNAME: z.string({
-    required_error: "This value is required, please check the .env config",
-  }),
-  PASSWORD: z.string({
-    required_error: "This value is required, please check the .env config",
-  }),
+yup.setLocale({
+  mixed: {
+    required: "${path} är ett obligatoriskt fält",
+  },
+  string: {
+    min: "Minst ${min} tecken behövs",
+  },
 });
 
-// export const formSchema = z
-//   .strictObject({
-//     name: z.string().length(0).optional(),
-//     email: z.string().length(0).optional(),
-//     caller: z.string(),
-//     user_name: z.string().length(4),
-//     u_place_of_work: z.string(),
-//     u_alternativ_kontaktvag: z.string(),
-//     u_additional_e_mail_address: z.string(),
-//     call_type: z.enum(["sc_request", "incident"]),
-//     u_business_application: z.string(),
-//     short_description: z.string(),
-//     description: z.string().min(20),
-//     u_confidential_information: z.optional(z.string()),
-//     files: z
-//       .object({
-//         id: z.string(),
-//         name: z.string(),
-//         type: z.string(),
-//         data: z.string(),
-//       })
-//       .array()
-//       .optional(),
-//   })
-//   .merge(
-//     z
-//       .strictObject({
-//         incident_date: z.string(),
-//         incident_other_people: z.string(),
-//         incident_other_computer: z.string(),
-//         incident_other_system: z.string(),
-//       })
-//       .partial()
-//   );
-
-// yup.setLocale({
-//   mixed: {
-//     required: "Nödvändig!",
-//   },
-//   string: {
-//     min: "Minst ${min} tecken behövs",
-//   },
-// });
+export const configSchema = yup.object({
+  ENDPOINT: yup.string().required(),
+  USERNAME: yup.string().required(),
+  PASSWORD: yup.string().required(),
+});
 
 export const formSchema = yup.object({
   name: yup.string().length(0).notRequired(),
