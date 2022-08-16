@@ -36,22 +36,22 @@ export const formSchema = yup.object({
     })
   ),
   incident_date: yup.string().when("call_type", {
-    is: (val) => val === "incident",
+    is: (val: "incident" | "sc_request") => val === "incident",
     then: (schema) => schema.required(),
     otherwise: (schema) => schema,
   }),
   incident_other_computer: yup.string().when("call_type", {
-    is: (val) => val === "incident",
+    is: (val: "incident" | "sc_request") => val === "incident",
     then: (schema) => schema.required(),
     otherwise: (schema) => schema,
   }),
   incident_other_people: yup.string().when("call_type", {
-    is: (val) => val === "incident",
+    is: (val: "incident" | "sc_request") => val === "incident",
     then: (schema) => schema.required(),
     otherwise: (schema) => schema,
   }),
   incident_other_system: yup.string().when("call_type", {
-    is: (val) => val === "incident",
+    is: (val: "incident" | "sc_request") => val === "incident",
     then: (schema) => schema.required(),
     otherwise: (schema) => schema,
   }),
