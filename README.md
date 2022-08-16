@@ -8,7 +8,7 @@
 # Getting started
 - Install dependencies
 ```
-Run yarn install in project directory
+yarn install
 ```
 - Build and run the project
 ```
