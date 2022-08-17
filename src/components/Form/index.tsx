@@ -10,12 +10,15 @@ import {
   Button,
   Collapse,
   Flex,
+  FormControl,
+  FormLabel,
   Grid,
   GridItem,
   IconButton,
   Input,
   Link,
   Select,
+  Spacer,
   StackDivider,
   Text,
   Textarea,
@@ -68,11 +71,13 @@ export const FormLayout = () => {
         incident_other_computer: "",
         incident_other_people: "",
         incident_other_system: "",
+        other: "false",
+        u_opened_for: "",
+        user_name_2: "",
+        u_place_of_work_2: "",
       }}
       validationSchema={formSchema}
-      onSubmit={async (values, { setSubmitting, resetForm, setValues }) => {
-        console.log(values);
-        console.log("submitting");
+      onSubmit={async (values, { setSubmitting, resetForm }) => {
         const { statusText } = await axios.post("/api", values);
         if (statusText === "OK") {
           showFormSubmitted();
@@ -127,7 +132,7 @@ export const FormLayout = () => {
               }}
               gap={4}
             >
-              <GridItem
+              {/* <GridItem
                 colSpan={{
                   base: 1,
                   md: 2,
@@ -136,7 +141,7 @@ export const FormLayout = () => {
                 <Text fontSize={"lg"}>Kontaktuppgifter</Text>
 
                 <hr />
-              </GridItem>
+              </GridItem> */}
               <GridItem>
                 <FormField
                   name="caller"
@@ -177,13 +182,53 @@ export const FormLayout = () => {
                   as={Input}
                 />
               </GridItem>
+              <Spacer />
+              <GridItem>
+                <FormField
+                  label="Beställer du åt någon annan?"
+                  name="other"
+                  as={Select}
+                >
+                  <option value="false">Nej</option>
+                  <option value="true">Ja</option>
+                </FormField>
+              </GridItem>
+              <Spacer />
+              {props.values.other === "true" && (
+                <>
+                  <GridItem>
+                    <FormField
+                      name="u_opened_for"
+                      label="Namn"
+                      placeholder="Adde"
+                      as={Input}
+                    />
+                  </GridItem>
+                  <GridItem>
+                    <FormField
+                      name="user_name_2"
+                      label="HSA-ID"
+                      placeholder="Padde"
+                      as={Input}
+                    />
+                  </GridItem>
+                  <GridItem>
+                    <FormField
+                      name="u_place_of_work_2"
+                      label="Arbetsplats"
+                      placeholder="PellUs"
+                      as={Input}
+                    />
+                  </GridItem>
+                </>
+              )}
               <GridItem
                 colSpan={{
                   base: 1,
                   md: 2,
                 }}
               >
-                <Text fontSize={"lg"}>Ärendeinformation</Text>
+                {/* <Text fontSize={"lg"}>Ärendeinformation</Text> */}
                 <hr />
               </GridItem>
 
@@ -210,22 +255,7 @@ export const FormLayout = () => {
               </GridItem>
 
               <GridItem>
-                <FormField
-                  label="Typ av ärende"
-                  name="call_type"
-                  as={Select}
-                  onChange={(e) => {
-                    props.handleChange(e);
-
-                    props.setFieldError("incident_date", "asdasdasd");
-                    // props.setTouched({
-                    //   incident_date: true,
-                    // });
-                    // props.setErrors({
-                    //   incident_date: "u need me",
-                    // });
-                  }}
-                >
+                <FormField label="Typ av ärende" name="call_type" as={Select}>
                   <option value="sc_request">Fråga / Beställning</option>
                   <option value="incident">Felanmälan</option>
                 </FormField>
@@ -346,6 +376,30 @@ export const FormLayout = () => {
                     colorScheme="blue"
                     isLoading={props.isSubmitting}
                     type="submit"
+                    onClick={(e) => {
+                      console.log(e);
+                      if (props.values.other === "true") {
+                        console.log("are we even here?");
+                        // here we need to swap places for the users fields, because reasons...
+                        let temp = { ...props.values };
+
+                        temp.u_opened_for = props.values.caller;
+                        temp.user_name_2 = props.values.user_name;
+                        temp.u_place_of_work_2 = props.values.u_place_of_work;
+
+                        temp.caller = props.values.u_opened_for;
+                        temp.user_name = props.values.user_name_2;
+                        temp.u_place_of_work = props.values.u_place_of_work_2;
+
+                        props.setValues(temp);
+                      } else {
+                        // Clear other fields for saftey
+                        props.setFieldValue("u_opened_for", "");
+                        props.setFieldValue("user_name_2", "");
+                        props.setFieldValue("u_place_of_work_2", "");
+                      }
+                      props.handleSubmit();
+                    }}
                   >
                     Skicka
                   </Button>

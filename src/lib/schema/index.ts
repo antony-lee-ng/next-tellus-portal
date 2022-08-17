@@ -1,13 +1,16 @@
 import * as yup from "yup";
 
-yup.setLocale({
-  mixed: {
-    required: "${path} är ett obligatoriskt fält",
-  },
-  string: {
-    min: "Minst ${min} tecken behövs",
-  },
-});
+// Only client side gets the translation
+if (typeof window !== "undefined") {
+  yup.setLocale({
+    mixed: {
+      required: "Obligatorisk",
+    },
+    string: {
+      min: "Minst ${min} tecken behövs",
+    },
+  });
+}
 
 export const configSchema = yup.object({
   ENDPOINT: yup.string().required(),
@@ -16,14 +19,30 @@ export const configSchema = yup.object({
 });
 
 export const formSchema = yup.object({
-  name: yup.string().length(0).notRequired(),
+  name: yup.string().length(0),
   email: yup.string().length(0),
   caller: yup.string().required(),
   user_name: yup.string().length(4).required(),
   u_place_of_work: yup.string().required(),
   u_alternativ_kontaktvag: yup.string().required(),
   u_additional_e_mail_address: yup.string().required(),
-  call_type: yup.mixed().oneOf(["sc_request", "incident"]).required(),
+  other: yup.string().oneOf(["true", "false"]).required(),
+  u_opened_for: yup.string().when("other", {
+    is: (val: "true" | "false") => val === "true",
+    then: (schema) => schema.required(),
+    otherwise: (schema) => schema,
+  }),
+  user_name_2: yup.string().when("other", {
+    is: (val: "true" | "false") => val === "true",
+    then: (schema) => schema.required(),
+    otherwise: (schema) => schema,
+  }),
+  u_place_of_work_2: yup.string().when("other", {
+    is: (val: "true" | "false") => val === "true",
+    then: (schema) => schema.required(),
+    otherwise: (schema) => schema,
+  }),
+  call_type: yup.string().oneOf(["sc_request", "incident"]).required(),
   u_business_application: yup.string().required(),
   short_description: yup.string().required(),
   description: yup.string().min(20).required(),

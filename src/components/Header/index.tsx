@@ -10,9 +10,7 @@ import {
   Popover,
   PopoverArrow,
   PopoverBody,
-  PopoverCloseButton,
   PopoverContent,
-  PopoverHeader,
   PopoverTrigger,
 } from "@chakra-ui/react";
 import { SunIcon, MoonIcon, QuestionIcon } from "@chakra-ui/icons";
@@ -58,7 +56,7 @@ export default function Header() {
       >
         <chakra.div h="4.5rem" mx="auto" maxW="1200px">
           <Flex w="full" h="full" px="6" align="center" justify="space-between">
-            <Flex align="center" h="40px" w="250px">
+            <Flex align="center" h="40px" w="250px" minH="40px" minW="250px">
               <Image src={`/${logo}`} objectFit="cover" />
             </Flex>
 
@@ -71,7 +69,7 @@ export default function Header() {
             >
               <Popover
                 isOpen={isPopoverOpen}
-                placement="left"
+                placement="bottom"
                 autoFocus={false}
               >
                 <PopoverTrigger>
