@@ -42,9 +42,14 @@ export class QueueHandler {
       const queueFiles = await readdir(this.path);
       for (const fileName of queueFiles) {
         const data = await readFile(`${this.path}/${fileName}`, "utf-8");
-        const form = await formSchema.validate(JSON.parse(data));
-        const { result } = await tellusAPI.createCall(form, false);
-        if (result.number) {
+        try {
+          const form = await formSchema.validate(JSON.parse(data));
+          const { result } = await tellusAPI.createCall(form, false);
+          if (result.number) {
+            await this.remove(fileName);
+          }
+        } catch (error) {
+          logger.error(`Queue: ${(error as Error).message} -> deleting...`);
           await this.remove(fileName);
         }
       }
