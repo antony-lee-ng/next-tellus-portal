@@ -1,6 +1,7 @@
 import * as yup from "yup";
 
 // Only client side gets the translation
+// @ts-ignore
 if (typeof window !== "undefined") {
   yup.setLocale({
     mixed: {
@@ -44,7 +45,6 @@ export const formSchema = yup.object({
     otherwise: (schema) => schema,
   }),
   call_type: yup.string().oneOf(["sc_request", "incident"]).required(),
-  u_business_application: yup.string().required(),
   short_description: yup.string().required(),
   description: yup.string().min(20).required(),
   u_confidential_information: yup.string(),

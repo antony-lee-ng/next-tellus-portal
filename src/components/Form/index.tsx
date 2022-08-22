@@ -32,7 +32,6 @@ import { PhoneModal } from "../Modal/PhoneModal";
 import { FormField } from "./FormField";
 
 export const FormLayout = () => {
-  const [services, setServices] = useState<IServices>();
   const attachmentRef = useRef(null);
   const { isOpen: isFormSubmitted, onOpen: showFormSubmitted } =
     useDisclosure();
@@ -49,13 +48,6 @@ export const FormLayout = () => {
     onClose: hidePhoneModal,
   } = useDisclosure();
 
-  useEffect(() => {
-    const fetchServices = async () => {
-      const { data } = await axios.get<IServices>("/api/services");
-      setServices(data);
-    };
-    fetchServices();
-  }, []);
   // If you want to change required fields, change the formSchema instead, src/lib/schema, try to use it as a single source
   return (
     <Formik<FormValues>
@@ -66,7 +58,6 @@ export const FormLayout = () => {
         u_alternativ_kontaktvag: "",
         u_additional_e_mail_address: "",
         call_type: "sc_request",
-        u_business_application: "",
         short_description: "",
         description: "",
         u_confidential_information: "",
@@ -276,23 +267,6 @@ export const FormLayout = () => {
                 <FormField label="Typ av ärende" name="call_type" as={Select}>
                   <option value="sc_request">Fråga / Beställning</option>
                   <option value="incident">Felanmälan</option>
-                </FormField>
-              </GridItem>
-              <GridItem>
-                <FormField
-                  name="u_business_application"
-                  as={Select}
-                  label="Vilket system?"
-                >
-                  <option disabled value="">
-                    Välj ett system
-                  </option>
-                  {services &&
-                    services.result.map(({ name, sys_id }) => (
-                      <option key={sys_id} value={sys_id}>
-                        {name}
-                      </option>
-                    ))}
                 </FormField>
               </GridItem>
               <GridItem
