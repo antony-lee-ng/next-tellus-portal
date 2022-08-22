@@ -20,9 +20,9 @@ import { useEffect } from "react";
 export default function Header() {
   const { toggleColorMode: toggleMode } = useColorMode();
   const {
-    isOpen: isModalOpen,
-    onOpen: onModalOpen,
-    onClose: onModalClose,
+    isOpen: isInfoModalOpen,
+    onOpen: onInfoModalOpen,
+    onClose: onInfoModalClose,
   } = useDisclosure();
   const {
     isOpen: isPopoverOpen,
@@ -56,7 +56,7 @@ export default function Header() {
       >
         <chakra.div h="4.5rem" mx="auto" maxW="1200px">
           <Flex w="full" h="full" px="6" align="center" justify="space-between">
-            <Flex align="center" h="40px" w="250px" minH="40px" minW="250px">
+            <Flex align="center" h="40px" w="250px">
               <Image src={`/${logo}`} objectFit="cover" />
             </Flex>
 
@@ -81,7 +81,7 @@ export default function Header() {
                     colorScheme="blue"
                     ml={{ base: "0", md: "3" }}
                     icon={<QuestionIcon />}
-                    onClick={onModalOpen}
+                    onClick={onInfoModalOpen}
                     onMouseEnter={onPopoverOpen}
                     onMouseLeave={onPopoverClose}
                   />
@@ -93,7 +93,7 @@ export default function Header() {
                 </PopoverContent>
               </Popover>
 
-              <InfoModal isOpen={isModalOpen} onClose={onModalClose} />
+              <InfoModal isOpen={isInfoModalOpen} onClose={onInfoModalClose} />
 
               <IconButton
                 size="md"

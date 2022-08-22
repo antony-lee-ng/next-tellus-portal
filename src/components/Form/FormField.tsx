@@ -9,7 +9,12 @@ import {
   InputLeftElement,
 } from "@chakra-ui/react";
 import { Field, FieldInputProps, FieldProps } from "formik";
-import { ChangeEventHandler, HTMLInputTypeAttribute, useRef } from "react";
+import {
+  ChangeEventHandler,
+  CSSProperties,
+  HTMLInputTypeAttribute,
+  useRef,
+} from "react";
 import { FormValues } from "src/lib/schema";
 
 interface IFormFieldProps {
@@ -22,6 +27,7 @@ interface IFormFieldProps {
   error_msg?: string;
   variant?: "outline" | "filled";
   type?: HTMLInputTypeAttribute;
+  style?: CSSProperties;
 }
 
 const FileUpload: React.FC<{
@@ -58,6 +64,7 @@ export const FormField: React.FC<IFormFieldProps> = (props) => {
       {({ field, form }: FieldProps) => {
         return (
           <FormControl
+            style={props.style}
             isInvalid={!!form.errors[props.name] && !!form.touched[props.name]}
           >
             <FormLabel>{props.label}</FormLabel>

@@ -36,7 +36,7 @@ export const InfoModal: React.FC<{
           <Tabs>
             <TabList>
               <Tab>Kontaktformuläret</Tab>
-              <Tab>SAM och SLLNet</Tab>
+              <Tab>SAM och Regionalt Nät</Tab>
               <Tab>eTjänsteKort</Tab>
             </TabList>
 
@@ -44,11 +44,12 @@ export const InfoModal: React.FC<{
               <TabPanel>
                 <Text>
                   Detta kontaktformulär når du när du inte är ansluten till
-                  Region Stockholms nätverk SLLNet.
+                  Region Stockholms nätverk Regionalt Nät.
                 </Text>
                 <Text>
                   Vill du komma åt Serviceförvaltningens portal via
-                  tellus.sll.se krävs det att du ansluter dig till SLLNet.
+                  tellus.sll.se krävs det att du ansluter dig till Regionalt
+                  Nät.
                 </Text>
                 <br />
                 <Text as="u">
@@ -67,15 +68,16 @@ export const InfoModal: React.FC<{
               <TabPanel>
                 <Text as="u">Anställd inom Region Stockholm</Text>
                 <Text>
-                  Är du anställd via Region Stockholm kommer du åt SLLNet via
-                  din arbetsplats. Arbetar du från distans kräver anslutning ett
-                  SAM-konto. Kontakta din närmaste chef för att få hjälp med hur
-                  du ansluter dig till SLLNet utanför din arbetsplats.
+                  Är du anställd via Region Stockholm kommer du åt Regionalt Nät
+                  via din arbetsplats. Arbetar du från distans kräver anslutning
+                  ett SAM-konto. Kontakta din närmaste chef för att få hjälp med
+                  hur du ansluter dig till Regionalt Nät utanför din
+                  arbetsplats.
                 </Text>
                 <br />
                 <Text as="u">
                   <Link
-                    href="https://vardgivarguiden.se/it-stod/e-tjanster-och-system/sllnet-och-sam/"
+                    href="https://vardgivarguiden.se/it-stod/e-tjanster-och-system/Regionalt Nät-och-sam/"
                     isExternal
                   >
                     Kommunalanställda samt Privata vårdgivare med vårdavtal
@@ -83,8 +85,8 @@ export const InfoModal: React.FC<{
                   </Link>
                 </Text>
                 <Text>
-                  För att nå SLLNet krävs det att din arbetsplats är ansluten
-                  till Regionalt Nät eller att du kopplar upp dig via
+                  För att nå Regionalt Nät krävs det att din arbetsplats är
+                  ansluten till Regionalt Nät eller att du kopplar upp dig via
                   SAM-tjänsten.
                 </Text>
               </TabPanel>

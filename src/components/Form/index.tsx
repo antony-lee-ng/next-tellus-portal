@@ -10,8 +10,6 @@ import {
   Button,
   Collapse,
   Flex,
-  FormControl,
-  FormLabel,
   Grid,
   GridItem,
   IconButton,
@@ -20,7 +18,6 @@ import {
   Select,
   Spacer,
   StackDivider,
-  Text,
   Textarea,
   useDisclosure,
   VStack,
@@ -31,6 +28,7 @@ import { useEffect, useRef, useState } from "react";
 import { convertFileToBase64 } from "src/lib/file/convertFileToBase64";
 import { formSchema, FormValues } from "src/lib/schema";
 import { IServices } from "src/lib/TellusAPI";
+import { PhoneModal } from "../Modal/PhoneModal";
 import { FormField } from "./FormField";
 
 export const FormLayout = () => {
@@ -43,6 +41,12 @@ export const FormLayout = () => {
     isOpen: isSumbitError,
     onOpen: showSubmitError,
     onClose: hideSubmitError,
+  } = useDisclosure();
+
+  const {
+    isOpen: isPhoneModalOpen,
+    onOpen: showPhoneModal,
+    onClose: hidePhoneModal,
   } = useDisclosure();
 
   useEffect(() => {
@@ -182,7 +186,12 @@ export const FormLayout = () => {
                   as={Input}
                 />
               </GridItem>
-              <Spacer />
+              <Spacer
+                display={{
+                  base: "none",
+                  md: "initial",
+                }}
+              />
               <GridItem>
                 <FormField
                   label="Beställer du åt någon annan?"
@@ -193,7 +202,12 @@ export const FormLayout = () => {
                   <option value="true">Ja</option>
                 </FormField>
               </GridItem>
-              <Spacer />
+              <Spacer
+                display={{
+                  base: "none",
+                  md: "initial",
+                }}
+              />
               {props.values.other === "true" && (
                 <>
                   <GridItem>
@@ -242,16 +256,20 @@ export const FormLayout = () => {
                 }
               >
                 <Collapse in={props.values.call_type === "incident"}>
-                  <Link href="tel:08-123-177-77 ">
+                  <Link onClick={showPhoneModal}>
                     <Alert status="error">
                       <AlertIcon />
                       <AlertDescription>
                         Om ditt ärende är brådskande ber vid dig att kontakta
-                        oss via telefon 08 123 177 77
+                        oss via telefon, klicka här
                       </AlertDescription>
                     </Alert>
                   </Link>
                 </Collapse>
+                <PhoneModal
+                  isOpen={isPhoneModalOpen}
+                  onClose={hidePhoneModal}
+                />
               </GridItem>
 
               <GridItem>
@@ -311,22 +329,43 @@ export const FormLayout = () => {
                     <FormField
                       name="incident_other_people"
                       label="Har andra samma fel?"
-                      as={Input}
-                    />
+                      as={Select}
+                    >
+                      <option disabled value="">
+                        Välj
+                      </option>
+                      <option value="vet ej">Vet ej</option>
+                      <option value="ja">Ja</option>
+                      <option value="nej">Nej</option>
+                    </FormField>
                   </GridItem>
                   <GridItem>
                     <FormField
                       name="incident_other_computer"
                       label="Fungerar det på en annan dator/enhet?"
-                      as={Input}
-                    />
+                      as={Select}
+                    >
+                      <option disabled value="">
+                        Välj
+                      </option>
+                      <option value="ja">Ja</option>
+                      <option value="nej">Nej</option>
+                      <option value="vet ej">Vet ej</option>
+                    </FormField>
                   </GridItem>
                   <GridItem>
                     <FormField
                       name="incident_other_system"
                       label="Har du samtidigt fel i andra system/tjänster?"
-                      as={Input}
-                    />
+                      as={Select}
+                    >
+                      <option disabled value="">
+                        Välj
+                      </option>
+                      <option value="ja">Ja</option>
+                      <option value="nej">Nej</option>
+                      <option value="vet ej">Vet ej</option>
+                    </FormField>
                   </GridItem>
                 </>
               )}
@@ -445,7 +484,7 @@ export const FormLayout = () => {
                 )}
               </GridItem>
             </Grid>
-            <Text
+            {/* <Text
               display={{
                 base: "none",
                 md: "initial",
@@ -462,7 +501,7 @@ export const FormLayout = () => {
               as="pre"
             >
               {JSON.stringify(props.errors, null, 2)}
-            </Text>
+            </Text> */}
             {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
             {/* <pre>{JSON.stringify(props.errors, null, 2)}</pre> */}
           </Form>

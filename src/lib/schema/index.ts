@@ -8,6 +8,7 @@ if (typeof window !== "undefined") {
     },
     string: {
       min: "Minst ${min} tecken behövs",
+      length: "Måste vara ${length} tecken långt",
     },
   });
 }

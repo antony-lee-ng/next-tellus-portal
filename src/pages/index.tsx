@@ -18,8 +18,10 @@ const Index = () => {
         }}
         maxW="container.md"
         p="6"
-        border={"1px"}
-        borderColor="inherit"
+        borderWidth={{
+          base: "none",
+          md: "1px",
+        }}
       >
         <FormLayout />
       </Container>
