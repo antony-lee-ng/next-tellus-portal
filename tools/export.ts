@@ -6,5 +6,4 @@ import path from "path";
   await mkdirp(
     path.join(targetPath, "builds", process.env.npm_package_version)
   );
-  // await mkdir("//slldrifttools01.gaia.sll.se/tellus/hello");
 })();
