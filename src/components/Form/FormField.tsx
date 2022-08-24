@@ -52,7 +52,6 @@ const FileUpload: React.FC<{
       <Input
         onClick={() => {
           inputRef.current.click();
-          console.log(inputRef);
         }}
         placeholder={props.placeholder || "Your file ..."}
       />

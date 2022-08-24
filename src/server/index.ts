@@ -12,8 +12,6 @@ const dev = process.env.NODE_ENV !== "production";
 const port = parseInt(process.env.PORT || (dev ? "3000" : "443"), 10);
 const hostname = "localhost";
 
-console.log(port);
-
 // // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port });
 const nextHandle = app.getRequestHandler();

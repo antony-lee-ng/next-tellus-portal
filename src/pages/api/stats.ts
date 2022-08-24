@@ -3,7 +3,6 @@ import { formSchema } from "src/lib/schema";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    console.log(typeof req.body);
     if (req.method !== "POST" && req.body) {
       throw new Error("Method is not POST...");
     }

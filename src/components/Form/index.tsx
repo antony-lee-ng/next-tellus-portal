@@ -399,9 +399,7 @@ export const FormLayout = () => {
                     isLoading={props.isSubmitting}
                     type="submit"
                     onClick={(e) => {
-                      console.log(e);
                       if (props.values.other === "true") {
-                        console.log("are we even here?");
                         // here we need to swap places for the users fields, because reasons...
                         let temp = { ...props.values };
 

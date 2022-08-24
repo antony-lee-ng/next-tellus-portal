@@ -9,8 +9,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       throw new Error("Method is not POST...");
     }
 
-    console.log(req.body);
-
     const data = await tellusAPI.createCall(req.body, true);
 
     res.status(200).json(data);
