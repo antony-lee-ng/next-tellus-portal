@@ -3,6 +3,7 @@ import {
   ComponentWithAs,
   FormControl,
   FormErrorMessage,
+  FormHelperText,
   FormLabel,
   Input,
   InputGroup,
@@ -28,6 +29,7 @@ interface IFormFieldProps {
   variant?: "outline" | "filled";
   type?: HTMLInputTypeAttribute;
   style?: CSSProperties;
+  helpertext?: string;
 }
 
 const FileUpload: React.FC<{
@@ -76,6 +78,7 @@ export const FormField: React.FC<IFormFieldProps> = (props) => {
                 {props?.children}
               </props.as>
             )}
+            <FormHelperText>{props.helpertext}</FormHelperText>
             <FormErrorMessage>
               {form.errors[props.name] &&
                 (props.error_msg || form.errors[props.name].toString())}
