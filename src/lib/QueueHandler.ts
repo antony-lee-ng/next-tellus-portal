@@ -4,6 +4,7 @@ import { logger } from "./logger";
 import { tellusAPI } from "./TellusAPI";
 import { mkdirp, outputFile } from "fs-extra";
 import { join } from "path";
+import { ValidationError } from "yup";
 
 export class QueueHandler {
   active: boolean;
@@ -49,8 +50,15 @@ export class QueueHandler {
             await this.remove(fileName);
           }
         } catch (error) {
-          logger.error(`Queue: ${(error as Error).message} -> deleting...`);
-          await this.remove(fileName);
+          if (error instanceof ValidationError) {
+            logger.error(
+              `Queue validation error: ${
+                (error as Error).message
+              } -> deleting...`
+            );
+          } else {
+            logger.error(`Queue error: ${(error as Error).message}`);
+          }
         }
       }
     } catch (err) {
