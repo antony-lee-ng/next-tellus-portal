@@ -33,8 +33,11 @@ import { FormField } from "./FormField";
 
 export const FormLayout = () => {
   const attachmentRef = useRef(null);
-  const { isOpen: isFormSubmitted, onOpen: showFormSubmitted } =
-    useDisclosure();
+  const {
+    isOpen: isFormSubmitted,
+    onOpen: showFormSubmitted,
+    onClose: hideFormSubmitted,
+  } = useDisclosure();
 
   const {
     isOpen: isSumbitError,
@@ -63,8 +66,8 @@ export const FormLayout = () => {
         u_confidential_information: "",
         files: [],
         incident_date: "",
-        incident_other_computer: "",
         incident_other_people: "",
+        incident_other_computer: "",
         incident_other_system: "",
         other: "false",
         u_opened_for: "",
@@ -72,7 +75,12 @@ export const FormLayout = () => {
         u_place_of_work_2: "",
       }}
       validationSchema={formSchema}
-      onSubmit={async (values, { setSubmitting, resetForm }) => {
+      onSubmit={async (values, { setSubmitting, resetForm, setFieldValue }) => {
+        hideFormSubmitted();
+        if (values.call_type === "incident") {
+          values.description += `\nNär fungerade det senast?: ${values.incident_date}\nHar andra samma fel?: ${values.incident_other_people}\nFungerar det på en annan dator/enhet?: ${values.incident_other_computer}\nHar du samtidigt fel i andra system/tjänster?: ${values.incident_other_system}`;
+        }
+
         const { statusText } = await axios.post("/api", values);
         if (statusText === "OK") {
           showFormSubmitted();
@@ -317,9 +325,9 @@ export const FormLayout = () => {
                       <option disabled value="">
                         Välj
                       </option>
-                      <option value="vet ej">Vet ej</option>
-                      <option value="ja">Ja</option>
-                      <option value="nej">Nej</option>
+                      <option value="Ja">Ja</option>
+                      <option value="Nej">Nej</option>
+                      <option value="Vet ej">Vet ej</option>
                     </FormField>
                   </GridItem>
                   <GridItem>
@@ -331,9 +339,9 @@ export const FormLayout = () => {
                       <option disabled value="">
                         Välj
                       </option>
-                      <option value="ja">Ja</option>
-                      <option value="nej">Nej</option>
-                      <option value="vet ej">Vet ej</option>
+                      <option value="Ja">Ja</option>
+                      <option value="Nej">Nej</option>
+                      <option value="Vet ej">Vet ej</option>
                     </FormField>
                   </GridItem>
                   <GridItem>
@@ -345,9 +353,9 @@ export const FormLayout = () => {
                       <option disabled value="">
                         Välj
                       </option>
-                      <option value="ja">Ja</option>
-                      <option value="nej">Nej</option>
-                      <option value="vet ej">Vet ej</option>
+                      <option value="Ja">Ja</option>
+                      <option value="Nej">Nej</option>
+                      <option value="Vet ej">Vet ej</option>
                     </FormField>
                   </GridItem>
                 </>
@@ -465,26 +473,6 @@ export const FormLayout = () => {
                 )}
               </GridItem>
             </Grid>
-            {/* <Text
-              display={{
-                base: "none",
-                md: "initial",
-              }}
-              as="pre"
-            >
-              {JSON.stringify(props.values, null, 2)}
-            </Text>
-            <Text
-              display={{
-                base: "none",
-                md: "initial",
-              }}
-              as="pre"
-            >
-              {JSON.stringify(props.errors, null, 2)}
-            </Text> */}
-            {/* <pre>{JSON.stringify(props.values, null, 2)}</pre> */}
-            {/* <pre>{JSON.stringify(props.errors, null, 2)}</pre> */}
           </Form>
         );
       }}
