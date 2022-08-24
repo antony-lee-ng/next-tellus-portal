@@ -6,7 +6,7 @@ import { queueHandler } from "./QueueHandler";
 import { formSchema } from "./schema";
 import { outputFile } from "fs-extra";
 import { readFile } from "fs/promises";
-
+import https from "https";
 export interface IServices {
   result: {
     sys_id: string;
@@ -24,6 +24,9 @@ export class TellusAPI {
         username: USERNAME,
         password: PASSWORD,
       },
+      httpAgent: new https.Agent({
+        rejectUnauthorized: false,
+      }),
     });
     this.path = process.env.DATA_PATH || "./data/";
   }
