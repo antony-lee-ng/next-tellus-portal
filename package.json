@@ -1,4 +1,6 @@
 {
+  "name": "next-tellus-portal",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon",
@@ -6,7 +8,7 @@
     "build:server": "tsc -p tsconfig.server.json",
     "build": "yarn build:next && yarn build:server",
     "start": "cross-env NODE_ENV=production node dist/server/index.js",
-    "export": "yarn build && bash ./bin/export.sh"
+    "export": "yarn build && bash ./bin/export.sh",
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.6",
