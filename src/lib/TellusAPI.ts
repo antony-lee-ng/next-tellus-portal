@@ -24,7 +24,7 @@ export class TellusAPI {
         username: USERNAME,
         password: PASSWORD,
       },
-      httpAgent: new https.Agent({
+      httpsAgent: new https.Agent({
         rejectUnauthorized: false,
       }),
     });
