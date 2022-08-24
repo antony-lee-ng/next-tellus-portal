@@ -1,11 +1,27 @@
 import * as yup from "yup";
 
-// Only client side gets the translation
+const translateType = (type: string) => {
+  switch (type) {
+    case "number":
+      return "nummer";
+    case "string":
+      return "sträng";
+    case "email":
+      return "e-post";
+    default:
+      return type;
+  }
+};
+
+// Only client side gets the translation, based on: https://github.com/jquense/yup/blob/2973d0a/src/locale.js
 // @ts-ignore
 if (typeof window !== "undefined") {
   yup.setLocale({
     mixed: {
       required: "Obligatorisk",
+      notType({ type }) {
+        return `Fel typ, måste vara ${translateType(type)}`;
+      },
     },
     string: {
       min: "Minst ${min} tecken behövs",
@@ -26,7 +42,7 @@ export const formSchema = yup.object({
   caller: yup.string().required(),
   user_name: yup.string().length(4).required(),
   u_place_of_work: yup.string().required(),
-  u_alternativ_kontaktvag: yup.string().required(),
+  u_alternativ_kontaktvag: yup.number().required(),
   u_additional_e_mail_address: yup.string().required(),
   other: yup.string().oneOf(["true", "false"]).required(),
   u_opened_for: yup.string().when("other", {

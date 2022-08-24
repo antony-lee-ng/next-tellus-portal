@@ -55,7 +55,7 @@ export const FormLayout = () => {
         caller: "",
         user_name: "",
         u_place_of_work: "",
-        u_alternativ_kontaktvag: "",
+        u_alternativ_kontaktvag: undefined,
         u_additional_e_mail_address: "",
         call_type: "sc_request",
         short_description: "",
@@ -125,7 +125,7 @@ export const FormLayout = () => {
                 base: "repeat(1, 1fr)",
                 md: "repeat(2, 1fr)",
               }}
-              gap={4}
+              gap={3}
             >
               {/* <GridItem
                 colSpan={{
@@ -141,7 +141,7 @@ export const FormLayout = () => {
                 <FormField
                   name="caller"
                   label="Namn"
-                  placeholder="Adam Maritz"
+                  placeholder="Adam"
                   as={Input}
                 />
               </GridItem>
@@ -165,7 +165,7 @@ export const FormLayout = () => {
                 <FormField
                   name="u_alternativ_kontaktvag"
                   label="Telefonnummer"
-                  placeholder="07613371337"
+                  placeholder="076 1234 567"
                   as={Input}
                 />
               </GridItem>
@@ -173,7 +173,6 @@ export const FormLayout = () => {
                 <FormField
                   name="u_additional_e_mail_address"
                   label="E-post"
-                  placeholder="adam.maritz@sll.se"
                   as={Input}
                 />
               </GridItem>
@@ -205,7 +204,7 @@ export const FormLayout = () => {
                     <FormField
                       name="u_opened_for"
                       label="Namn"
-                      placeholder="Adde"
+                      placeholder="Rasmus"
                       as={Input}
                     />
                   </GridItem>
@@ -213,7 +212,7 @@ export const FormLayout = () => {
                     <FormField
                       name="user_name_2"
                       label="HSA-ID"
-                      placeholder="Padde"
+                      placeholder="9VW8"
                       as={Input}
                     />
                   </GridItem>
@@ -221,7 +220,7 @@ export const FormLayout = () => {
                     <FormField
                       name="u_place_of_work_2"
                       label="Arbetsplats"
-                      placeholder="PellUs"
+                      placeholder="Leveransstöd"
                       as={Input}
                     />
                   </GridItem>
@@ -269,13 +268,22 @@ export const FormLayout = () => {
                   <option value="incident">Felanmälan</option>
                 </FormField>
               </GridItem>
-              <GridItem
-                colSpan={{
-                  base: 1,
-                  md: 2,
-                }}
-              >
-                <FormField name="short_description" label="Rubrik" as={Input} />
+              <Spacer />
+              <GridItem>
+                <FormField
+                  name="short_description"
+                  label="Rubrik"
+                  as={Input}
+                  placeholder="Kort beskrivning av ditt ärende"
+                />
+              </GridItem>
+              <GridItem>
+                <FormField
+                  name="u_confidential_information"
+                  label="Konfidentiell information"
+                  as={Input}
+                  helpertext="IP-adresser, Servernamn eller eTjänstekortnummer"
+                />
               </GridItem>
               <GridItem
                 colSpan={{
@@ -287,6 +295,7 @@ export const FormLayout = () => {
                   name="description"
                   label="Beskrivning"
                   as={Textarea}
+                  placeholder="Beskriv ditt ärende så utförligt du kan"
                 />
               </GridItem>
               {props.values.call_type === "incident" && (
