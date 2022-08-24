@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import { tellusAPI } from "src/lib/TellusAPI";
 import { logger } from "../../lib/logger";
