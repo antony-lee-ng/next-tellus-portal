@@ -1,5 +1,7 @@
 import * as yup from "yup";
 
+// https://github.com/jquense/yup
+
 const translateType = (type: string) => {
   switch (type) {
     case "number":
@@ -26,6 +28,7 @@ if (typeof window !== "undefined") {
     string: {
       min: "Minst ${min} tecken behövs",
       length: "Måste vara ${length} tecken långt",
+      email: "Måste vara en giltig e-post adress",
     },
   });
 }
@@ -43,7 +46,7 @@ export const formSchema = yup.object({
   user_name: yup.string().length(4).required(),
   u_place_of_work: yup.string().required(),
   u_alternativ_kontaktvag: yup.number().required(),
-  u_additional_e_mail_address: yup.string().required(),
+  u_additional_e_mail_address: yup.string().email().required(),
   other: yup.string().oneOf(["true", "false"]).required(),
   u_opened_for: yup.string().when("other", {
     is: (val: "true" | "false") => val === "true",
