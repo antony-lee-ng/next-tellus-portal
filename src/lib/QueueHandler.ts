@@ -40,8 +40,9 @@ export class QueueHandler {
   async read() {
     try {
       logger.info("Checking queue...");
-      const queueFiles = await readdir(this.path);
+      const queueFiles = await readdir(this.path); // ["services.json", "services copy.json"]
       for (const fileName of queueFiles) {
+        // fileName = "services.json"
         const data = await readFile(`${this.path}/${fileName}`, "utf-8");
         try {
           const form = await formSchema.validate(JSON.parse(data));
@@ -56,6 +57,7 @@ export class QueueHandler {
                 (error as Error).message
               } -> deleting...`
             );
+            await this.remove(fileName);
           } else {
             logger.error(`Queue error: ${(error as Error).message}`);
           }
@@ -91,5 +93,9 @@ export class QueueHandler {
 }
 
 export const queueHandler = new QueueHandler({
-  waitTime: 10000,
+  // try to use env file, default is 5 seconds if DEV else 15 min
+  waitTime:
+    parseInt(process.env.QUEUE_TIMER) || process.env.NODE_ENV === "development"
+      ? 5000
+      : 1000 * 60 * 15,
 });
