@@ -77,7 +77,7 @@ export const InfoModal: React.FC<{
                 <br />
                 <Text as="u">
                   <Link
-                    href="https://vardgivarguiden.se/it-stod/e-tjanster-och-system/Regionalt Nät-och-sam/"
+                    href="https://vardgivarguiden.se/it-stod/e-tjanster-och-system/sllnet-och-sam/"
                     isExternal
                   >
                     Kommunalanställda samt Privata vårdgivare med vårdavtal
