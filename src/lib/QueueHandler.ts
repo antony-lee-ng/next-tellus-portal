@@ -40,9 +40,8 @@ export class QueueHandler {
   async read() {
     try {
       logger.info("Checking queue...");
-      const queueFiles = await readdir(this.path); // ["services.json", "services copy.json"]
+      const queueFiles = await readdir(this.path);
       for (const fileName of queueFiles) {
-        // fileName = "services.json"
         const data = await readFile(`${this.path}/${fileName}`, "utf-8");
         try {
           const form = await formSchema.validate(JSON.parse(data));
