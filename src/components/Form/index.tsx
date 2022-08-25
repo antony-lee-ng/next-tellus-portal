@@ -146,26 +146,15 @@ export const FormLayout = () => {
                 <hr />
               </GridItem> */}
               <GridItem>
-                <FormField
-                  name="caller"
-                  label="Namn"
-                  placeholder="Adam"
-                  as={Input}
-                />
+                <FormField name="caller" label="Namn" as={Input} />
               </GridItem>
               <GridItem>
-                <FormField
-                  name="user_name"
-                  label="HSA-ID"
-                  placeholder="C8SG"
-                  as={Input}
-                />
+                <FormField name="user_name" label="HSA-ID" as={Input} />
               </GridItem>
               <GridItem>
                 <FormField
                   name="u_place_of_work"
                   label="Arbetsplats"
-                  placeholder="TellUs Förvaltningen"
                   as={Input}
                 />
               </GridItem>
@@ -173,7 +162,6 @@ export const FormLayout = () => {
                 <FormField
                   name="u_alternativ_kontaktvag"
                   label="Telefonnummer"
-                  placeholder="076 1234 567"
                   as={Input}
                 />
               </GridItem>
@@ -209,26 +197,15 @@ export const FormLayout = () => {
               {props.values.other === "true" && (
                 <>
                   <GridItem>
-                    <FormField
-                      name="u_opened_for"
-                      label="Namn"
-                      placeholder="Rasmus"
-                      as={Input}
-                    />
+                    <FormField name="u_opened_for" label="Namn" as={Input} />
                   </GridItem>
                   <GridItem>
-                    <FormField
-                      name="user_name_2"
-                      label="HSA-ID"
-                      placeholder="9VW8"
-                      as={Input}
-                    />
+                    <FormField name="user_name_2" label="HSA-ID" as={Input} />
                   </GridItem>
                   <GridItem>
                     <FormField
                       name="u_place_of_work_2"
                       label="Arbetsplats"
-                      placeholder="Leveransstöd"
                       as={Input}
                     />
                   </GridItem>
