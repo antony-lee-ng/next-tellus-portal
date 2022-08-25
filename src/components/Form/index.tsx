@@ -22,17 +22,18 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Form, Formik } from "formik";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { convertFileToBase64 } from "src/lib/file/convertFileToBase64";
 import { formSchema, FormValues } from "src/lib/schema";
-import { IServices } from "src/lib/TellusAPI";
+import { IResult } from "src/lib/TellusAPI";
 import { PhoneModal } from "../Modal/PhoneModal";
 import { FormField } from "./FormField";
 
 export const FormLayout = () => {
   const attachmentRef = useRef(null);
+  const [recordNumber, setRecordNumber] = useState("");
   const {
     isOpen: isFormSubmitted,
     onOpen: showFormSubmitted,
@@ -40,7 +41,7 @@ export const FormLayout = () => {
   } = useDisclosure();
 
   const {
-    isOpen: isSumbitError,
+    isOpen: isSubmitError,
     onOpen: showSubmitError,
     onClose: hideSubmitError,
   } = useDisclosure();
@@ -49,6 +50,12 @@ export const FormLayout = () => {
     isOpen: isPhoneModalOpen,
     onOpen: showPhoneModal,
     onClose: hidePhoneModal,
+  } = useDisclosure();
+
+  const {
+    isOpen: isAddedToQueue,
+    onOpen: showIsAddedToQueue,
+    onClose: hideIsAddedToQueue,
   } = useDisclosure();
 
   // If you want to change required fields, change the formSchema instead, src/lib/schema, try to use it as a single source
@@ -75,21 +82,36 @@ export const FormLayout = () => {
         u_place_of_work_2: "",
       }}
       validationSchema={formSchema}
-      onSubmit={async (values, { setSubmitting, resetForm, setFieldValue }) => {
-        hideFormSubmitted();
-        if (values.call_type === "incident") {
-          values.description += `\nNär fungerade det senast?: ${values.incident_date}\nHar andra samma fel?: ${values.incident_other_people}\nFungerar det på en annan dator/enhet?: ${values.incident_other_computer}\nHar du samtidigt fel i andra system/tjänster?: ${values.incident_other_system}`;
-        }
-
-        const { statusText } = await axios.post("/api", values);
-        if (statusText === "OK") {
-          showFormSubmitted();
+      onSubmit={async (values, { setSubmitting, resetForm }) => {
+        const tempDesc = values.description;
+        try {
+          // Hide alerts
+          hideFormSubmitted();
           hideSubmitError();
+          hideIsAddedToQueue();
+
+          if (values.call_type === "incident") {
+            values.description += `\nNär fungerade det senast?: ${values.incident_date}\nHar andra samma fel?: ${values.incident_other_people}\nFungerar det på en annan dator/enhet?: ${values.incident_other_computer}\nHar du samtidigt fel i andra system/tjänster?: ${values.incident_other_system}`;
+          }
+          const { data } = await axios.post<IResult>("/api", values);
+          setRecordNumber(data.result.number);
+          showFormSubmitted();
           resetForm();
-        } else {
-          showSubmitError();
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            if (
+              error.response.status === 500 &&
+              error.response.data.message === "Added to queue"
+            ) {
+              // show added to queue msg
+              showIsAddedToQueue();
+            }
+          } else {
+            showSubmitError();
+          }
         }
 
+        values.description = tempDesc;
         setSubmitting(false);
       }}
     >
@@ -106,12 +128,16 @@ export const FormLayout = () => {
               >
                 <Alert status="success">
                   <AlertIcon />
-                  <AlertDescription>Tack för ditt ärende!</AlertDescription>
+                  <AlertDescription>
+                    Tack för ditt ärende!
+                    {recordNumber &&
+                      ` Du har fått ärendenummer: ${recordNumber}`}{" "}
+                  </AlertDescription>
                 </Alert>
               </GridItem>
             )}
 
-            {isSumbitError && (
+            {isSubmitError && (
               <GridItem
                 colSpan={{
                   base: 1,
@@ -123,6 +149,24 @@ export const FormLayout = () => {
                   <AlertIcon />
                   <AlertDescription>
                     Något gick fel försök igen senare
+                  </AlertDescription>
+                </Alert>
+              </GridItem>
+            )}
+
+            {isAddedToQueue && (
+              <GridItem
+                colSpan={{
+                  base: 1,
+                  md: 2,
+                }}
+                pb="4"
+              >
+                <Alert status="warning">
+                  <AlertIcon />
+                  <AlertDescription>
+                    Ditt har ärende har lagts i kö och så fort TellUs är uppe
+                    igen så skickas det in.
                   </AlertDescription>
                 </Alert>
               </GridItem>
