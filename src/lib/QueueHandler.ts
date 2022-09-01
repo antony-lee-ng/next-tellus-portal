@@ -92,9 +92,10 @@ export class QueueHandler {
 }
 
 export const queueHandler = new QueueHandler({
-  // try to use env file, default is 5 seconds if DEV else 15 min
-  waitTime:
-    parseInt(process.env.QUEUE_TIMER) || process.env.NODE_ENV === "development"
-      ? 5000
-      : 1000 * 60 * 15,
+  // try to use env file, default is 15 min if DEV 5
+  waitTime: process.env.QUEUE_TIMER
+    ? parseInt(process.env.QUEUE_TIMER)
+    : process.env.NODE_ENV === "development"
+    ? 5000
+    : 1000 * 60 * 15,
 });
