@@ -65,7 +65,7 @@ export const FormLayout = () => {
         caller: "",
         user_name: "",
         u_place_of_work: "",
-        u_alternativ_kontaktvag: undefined,
+        u_alternativ_kontaktvag: "" as unknown as number, // This is because of resetting form does not work when using undefined
         u_additional_e_mail_address: "",
         call_type: "sc_request",
         short_description: "",
