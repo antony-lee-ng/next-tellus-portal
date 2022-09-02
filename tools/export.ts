@@ -46,11 +46,14 @@ import { exec, spawn } from "child_process";
         exec("taskkill /F /T /PID " + process.pid);
       });
 
-      const transfer = spawn(`cp -rf ${BUILD_DIR} ${TARGET_DIR}`, {
-        cwd: process.cwd(),
-        shell: true,
-        stdio: "inherit",
-      });
+      const transfer = spawn(
+        `robocopy ${BUILD_DIR} ${path.join(TARGET_DIR, VERSION_DIR)} /MIR`,
+        {
+          cwd: process.cwd(),
+          shell: true,
+          stdio: "inherit",
+        }
+      );
 
       transfer.on("close", (code) => {
         exec(`start ${TARGET_DIR}`);
