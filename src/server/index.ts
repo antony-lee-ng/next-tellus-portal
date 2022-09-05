@@ -6,7 +6,8 @@ import http from "http";
 import express from "express";
 import next from "next";
 import { queueHandler } from "../lib/QueueHandler";
-import { loadCerts } from "../lib/server/loadCerts";
+import { readFile } from "fs-extra";
+import { logger } from "../lib/logger";
 
 const dev = process.env.NODE_ENV !== "production";
 const port = parseInt(process.env.PORT || (dev ? "3000" : "443"), 10);
@@ -26,7 +27,19 @@ const nextHandle = app.getRequestHandler();
     server.all("*", (req, res) => nextHandle(req, res));
 
     if (!dev) {
-      https.createServer(loadCerts(), server).listen(port);
+      https
+        .createServer(
+          {
+            cert: await readFile(
+              process.env.HTTPS_SSL_CERT || "./certs/cert/tellus-acc.sll.se.cer"
+            ),
+            key: await readFile(
+              process.env.HTTPS_SSL_KEY || "./certs/key/tellus-acc.sll.se.key"
+            ),
+          },
+          server
+        )
+        .listen(port);
     } else {
       http.createServer(server).listen(port);
     }
@@ -34,6 +47,7 @@ const nextHandle = app.getRequestHandler();
     await queueHandler.start();
     console.log(`> Ready on http://localhost:${port}`);
   } catch (error) {
+    logger.error(error);
     console.error(error);
     process.exit(1);
   }
