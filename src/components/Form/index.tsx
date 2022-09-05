@@ -398,6 +398,7 @@ export const FormLayout = () => {
                   style={{ display: "none" }}
                   multiple
                   onChange={async (e) => {
+                    props.setSubmitting(true);
                     const map = await Promise.all(
                       Array.from(e.target.files).map(async (file) => ({
                         name: file.name,
@@ -407,8 +408,10 @@ export const FormLayout = () => {
                           .pop(),
                       }))
                     );
+
                     props.setFieldValue("files", map);
                     e.target.value = "";
+                    props.setSubmitting(false);
                   }}
                 />
 
