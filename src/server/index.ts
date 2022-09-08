@@ -1,5 +1,13 @@
 import { loadEnvConfig } from "@next/env";
-loadEnvConfig(process.env.INIT_CWD, process.env.NODE_ENV !== "production");
+loadEnvConfig(
+  process.env.INIT_CWD || process.cwd(),
+  process.env.NODE_ENV !== "production"
+);
+import { logger } from "../lib/logger";
+
+logger.info(
+  `Starting ${process.env.npm_package_version} in dir ${process.cwd()}`
+);
 
 import https from "https";
 import http from "http";
@@ -7,7 +15,6 @@ import express from "express";
 import next from "next";
 import { queueHandler } from "../lib/QueueHandler";
 import { readFile } from "fs-extra";
-import { logger } from "../lib/logger";
 
 const dev = process.env.NODE_ENV !== "production";
 const port = parseInt(process.env.PORT || (dev ? "3000" : "443"), 10);
