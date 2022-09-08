@@ -398,20 +398,25 @@ export const FormLayout = () => {
                   style={{ display: "none" }}
                   multiple
                   onChange={async (e) => {
-                    props.setSubmitting(true);
-                    const map = await Promise.all(
-                      Array.from(e.target.files).map(async (file) => ({
-                        name: file.name,
-                        type: file.type,
-                        data: (await convertFileToBase64(file))
-                          .split(";base64,")
-                          .pop(),
-                      }))
-                    );
+                    try {
+                      props.setSubmitting(true);
+                      const map = await Promise.all(
+                        Array.from(e.target.files).map(async (file) => ({
+                          name: file.name,
+                          type: file.type,
+                          data: (await convertFileToBase64(file))
+                            .split(";base64,")
+                            .pop(),
+                        }))
+                      );
 
-                    props.setFieldValue("files", map);
-                    e.target.value = "";
-                    props.setSubmitting(false);
+                      props.setFieldValue("files", map);
+                      e.target.value = "";
+                      props.setSubmitting(false);
+                    } catch (error) {
+                      console.log(error);
+                      props.setSubmitting(false);
+                    }
                   }}
                 />
 
