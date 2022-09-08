@@ -4,6 +4,8 @@ export const logger = createLogger({
   format: format.combine(format.timestamp(), format.json()),
   transports: [
     new transports.Console(),
-    new transports.File({ filename: "logs/combined.log" }),
+    new transports.File({
+      filename: process.env.LOG_PATH || "../../logs/combined.log",
+    }),
   ],
 });
