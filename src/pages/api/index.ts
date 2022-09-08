@@ -20,4 +20,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "6mb", // <-- #https://stackoverflow.com/questions/70503440/how-to-override-the-4mb-api-routes-body-size-limit
+    },
+  },
+};
+
 export default handler;

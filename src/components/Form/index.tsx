@@ -10,6 +10,9 @@ import {
   Button,
   Collapse,
   Flex,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
   Grid,
   GridItem,
   IconButton,
@@ -34,6 +37,7 @@ import { FormField } from "./FormField";
 export const FormLayout = () => {
   const attachmentRef = useRef(null);
   const [recordNumber, setRecordNumber] = useState("");
+  const [showFileError, setShowFileError] = useState(false);
   const {
     isOpen: isFormSubmitted,
     onOpen: showFormSubmitted,
@@ -98,6 +102,7 @@ export const FormLayout = () => {
           showFormSubmitted();
           resetForm();
         } catch (error) {
+          console.log(error);
           if (error instanceof AxiosError) {
             if (
               error.response.status === 500 &&
@@ -105,6 +110,7 @@ export const FormLayout = () => {
             ) {
               // show added to queue msg
               showIsAddedToQueue();
+              resetForm();
             }
           } else {
             showSubmitError();
@@ -131,7 +137,7 @@ export const FormLayout = () => {
                   <AlertDescription>
                     Tack för ditt ärende!
                     {recordNumber &&
-                      ` Du har fått ärendenummer: ${recordNumber}`}{" "}
+                      ` Du har fått ärendenummer: ${recordNumber}`}
                   </AlertDescription>
                 </Alert>
               </GridItem>
@@ -399,68 +405,96 @@ export const FormLayout = () => {
                   multiple
                   onChange={async (e) => {
                     try {
+                      setShowFileError(false);
                       props.setSubmitting(true);
-                      const map = await Promise.all(
+                      const fileMap = await Promise.all(
                         Array.from(e.target.files).map(async (file) => ({
                           name: file.name,
                           type: file.type,
                           data: (await convertFileToBase64(file))
                             .split(";base64,")
                             .pop(),
+                          size: parseFloat((file.size / 1024).toFixed()),
                         }))
                       );
 
-                      props.setFieldValue("files", map);
+                      const totalSize = fileMap.reduce((pre, cur) => {
+                        return pre + cur.size;
+                      }, 0);
+
+                      if (totalSize > 4000) {
+                        e.target.value = "";
+                        // Max file size 4 MB || 4000 KB
+                        props.setFieldValue("files", []);
+                        setShowFileError(true);
+                        throw new Error(
+                          "Du har bifogat för stora filer, du får max bifoga totalt 4 MB"
+                        );
+                      }
+
+                      props.setFieldValue("files", fileMap);
                       e.target.value = "";
                       props.setSubmitting(false);
                     } catch (error) {
-                      console.log(error);
+                      alert(error);
                       props.setSubmitting(false);
+
+                      e.target.value = "";
                     }
                   }}
                 />
+                <FormControl isInvalid={showFileError}>
+                  <Flex justify={"space-between"}>
+                    <FormControl isInvalid={showFileError}>
+                      <Button
+                        w="40"
+                        leftIcon={<AttachmentIcon />}
+                        variant="outline"
+                        onClick={() => attachmentRef.current.click()}
+                      >
+                        Bifoga
+                      </Button>
+                      <FormHelperText>Max 4 mb</FormHelperText>
 
-                <Flex justify={"space-between"}>
-                  <Button
-                    w="40"
-                    leftIcon={<AttachmentIcon />}
-                    variant="outline"
-                    onClick={() => attachmentRef.current.click()}
-                  >
-                    Bifoga
-                  </Button>
-                  <Button
-                    w="40"
-                    rightIcon={<ArrowForwardIcon />}
-                    colorScheme="blue"
-                    isLoading={props.isSubmitting}
-                    type="submit"
-                    onClick={(e) => {
-                      if (props.values.other === "true") {
-                        // here we need to swap places for the users fields, because reasons...
-                        let temp = { ...props.values };
+                      <FormErrorMessage>
+                        Något gick fel, dubbelkolla att dina filer inte
+                        överstiger 4 mb totalt
+                      </FormErrorMessage>
+                    </FormControl>
 
-                        temp.u_opened_for = props.values.caller;
-                        temp.user_name_2 = props.values.user_name;
-                        temp.u_place_of_work_2 = props.values.u_place_of_work;
+                    <Button
+                      w="40"
+                      rightIcon={<ArrowForwardIcon />}
+                      colorScheme="blue"
+                      isLoading={props.isSubmitting}
+                      type="submit"
+                      onClick={(e) => {
+                        if (props.values.other === "true") {
+                          // here we need to swap places for the users fields, because reasons...
+                          let temp = { ...props.values };
 
-                        temp.caller = props.values.u_opened_for;
-                        temp.user_name = props.values.user_name_2;
-                        temp.u_place_of_work = props.values.u_place_of_work_2;
+                          temp.u_opened_for = props.values.caller;
+                          temp.user_name_2 = props.values.user_name;
+                          temp.u_place_of_work_2 = props.values.u_place_of_work;
 
-                        props.setValues(temp);
-                      } else {
-                        // Clear other fields for saftey
-                        props.setFieldValue("u_opened_for", "");
-                        props.setFieldValue("user_name_2", "");
-                        props.setFieldValue("u_place_of_work_2", "");
-                      }
-                      props.handleSubmit();
-                    }}
-                  >
-                    Skicka
-                  </Button>
-                </Flex>
+                          temp.caller = props.values.u_opened_for;
+                          temp.user_name = props.values.user_name_2;
+                          temp.u_place_of_work = props.values.u_place_of_work_2;
+
+                          props.setValues(temp);
+                        } else {
+                          // Clear other fields for saftey
+                          props.setFieldValue("u_opened_for", "");
+                          props.setFieldValue("user_name_2", "");
+                          props.setFieldValue("u_place_of_work_2", "");
+                        }
+                        props.handleSubmit();
+                      }}
+                    >
+                      Skicka
+                    </Button>
+                  </Flex>
+                </FormControl>
 
                 {props.values.files.length > 0 && (
                   <VStack
