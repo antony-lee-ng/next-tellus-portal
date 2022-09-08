@@ -1,5 +1,5 @@
 import { loadEnvConfig } from "@next/env";
-loadEnvConfig(process.cwd(), process.env.NODE_ENV !== "production");
+loadEnvConfig(process.env.INIT_CWD, process.env.NODE_ENV !== "production");
 
 import https from "https";
 import http from "http";
