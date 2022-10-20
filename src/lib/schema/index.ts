@@ -43,7 +43,7 @@ export const formSchema = yup.object({
   name: yup.string().length(0),
   email: yup.string().length(0),
   caller: yup.string().required(),
-  user_name: yup.string().length(4).required(),
+  user_name: yup.string().length(4),
   u_place_of_work: yup.string().required(),
   u_alternativ_kontaktvag: yup.number().required(),
   u_additional_e_mail_address: yup.string().email().required(),
