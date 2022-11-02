@@ -39,13 +39,19 @@ export const configSchema = yup.object({
   PASSWORD: yup.string().required(),
 });
 
+const phoneRegExp =
+  /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/;
+
 export const formSchema = yup.object({
   name: yup.string().length(0),
   email: yup.string().length(0),
   caller: yup.string().required(),
   user_name: yup.string().length(4),
   u_place_of_work: yup.string().required(),
-  u_alternativ_kontaktvag: yup.number().required(),
+  u_alternativ_kontaktvag: yup
+    .string()
+    .matches(phoneRegExp, "Måste vara ett telefonnummer")
+    .required(),
   u_additional_e_mail_address: yup.string().email().required(),
   other: yup.string().oneOf(["true", "false"]).required(),
   u_opened_for: yup.string().when("other", {

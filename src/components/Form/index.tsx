@@ -69,7 +69,7 @@ export const FormLayout = () => {
         caller: "",
         user_name: "",
         u_place_of_work: "",
-        u_alternativ_kontaktvag: "" as unknown as number, // This is because of resetting form does not work when using undefined
+        u_alternativ_kontaktvag: "", // This is because of resetting form does not work when using undefined
         u_additional_e_mail_address: "",
         call_type: "sc_request",
         short_description: "",
@@ -214,6 +214,7 @@ export const FormLayout = () => {
                   label="Telefonnummer"
                   as={Input}
                 />
+
               </GridItem>
               <GridItem>
                 <FormField
@@ -493,6 +494,7 @@ export const FormLayout = () => {
                     >
                       Skicka
                     </Button>
+
                   </Flex>
                 </FormControl>
 
@@ -534,6 +536,21 @@ export const FormLayout = () => {
                     ))}
                   </VStack>
                 )}
+              </GridItem>
+              <GridItem
+                colSpan={{
+                  base: 1,
+                  md: 2,
+                }}
+              >
+                <Link onClick={showPhoneModal}>
+                  <Alert status="info">
+                    <AlertIcon />
+                    <AlertDescription>
+                      Du kan även nå oss via telefon, klicka här!
+                    </AlertDescription>
+                  </Alert>
+                </Link>
               </GridItem>
             </Grid>
           </Form>

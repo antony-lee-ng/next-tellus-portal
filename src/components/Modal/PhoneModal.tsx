@@ -47,7 +47,7 @@ export const PhoneModal: React.FC<{
     { name: "Danderyds Sjukhus", number: "08 123 556 00" },
     { name: "Hälso- och sjukvårdsförvaltningen", number: "08 123 177 77" },
     { name: "Karolinska Universitetssjukhuset", number: "08 123 777 77" },
-    { name: "Regionledingskontoret", number: "08 123 177 77" },
+    { name: "Regionledningskontoret", number: "08 123 177 77" },
     { name: "Reservkort", number: "08 123 700 20" },
     { name: "Serviceförvaltningen", number: "08 123 177 77" },
     { name: "Södersjukhuset AB", number: "08 616 13 00" },

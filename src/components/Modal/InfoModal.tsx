@@ -29,7 +29,7 @@ export const InfoModal: React.FC<{
       <ModalOverlay />
       <ModalContent>
         <ModalHeader borderBottom="1px" borderColor="inherit">
-          Kontaktformulär for Serviceförvaltningen
+          Kontaktformulär för Serviceförvaltningen
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -66,7 +66,7 @@ export const InfoModal: React.FC<{
                 </UnorderedList>
               </TabPanel>
               <TabPanel>
-                <Text as="u">Anställd inom Region Stockholm</Text>
+                <Text as="b">Anställd inom Region Stockholm</Text>
                 <Text>
                   Är du anställd via Region Stockholm kommer du åt Regionalt Nät
                   via din arbetsplats. Arbetar du från distans kräver anslutning
@@ -75,15 +75,13 @@ export const InfoModal: React.FC<{
                   arbetsplats.
                 </Text>
                 <br />
-                <Text as="u">
-                  <Link
-                    href="https://vardgivarguiden.se/it-stod/e-tjanster-och-system/sllnet-och-sam/"
-                    isExternal
-                  >
-                    Kommunalanställda samt Privata vårdgivare med vårdavtal
-                    <ExternalLinkIcon mx="2px" />
-                  </Link>
-                </Text>
+                <Link as="b" color={"blue.500"}
+                  href="https://vardgivarguiden.se/it-stod/e-tjanster-och-system/sllnet-och-sam/"
+                  isExternal
+                >
+                  Kommunalanställda samt Privata vårdgivare med vårdavtal
+                  <ExternalLinkIcon mx="2px" />
+                </Link>
                 <Text>
                   För att nå Regionalt Nät krävs det att din arbetsplats är
                   ansluten till Regionalt Nät eller att du kopplar upp dig via
@@ -91,14 +89,14 @@ export const InfoModal: React.FC<{
                 </Text>
               </TabPanel>
               <TabPanel>
-                <Text as="u">Anställd inom Region Stockholm</Text>
+                <Text as="b">Anställd inom Region Stockholm</Text>
                 <Text>
                   Sök på "eTjänstekort" på din organisations intranät
                   alternativt kontakta din närmaste chef.
                 </Text>
                 <br />
-                <Text as="u">
-                  <Link
+                <Text as="b">
+                  <Link color={"blue.500"}
                     href="https://vardgivarguiden.se/it-stod/etjanstekort/bestalla/"
                     isExternal
                   >
