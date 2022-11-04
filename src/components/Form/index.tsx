@@ -34,6 +34,7 @@ import { IResult } from "src/lib/TellusAPI";
 import { PhoneModal } from "../Modal/PhoneModal";
 import { FormField } from "./FormField";
 
+
 export const FormLayout = () => {
   const attachmentRef = useRef(null);
   const [recordNumber, setRecordNumber] = useState("");
@@ -277,25 +278,23 @@ export const FormLayout = () => {
                   base: 1,
                   md: 2,
                 }}
-                display={
-                  props.values.call_type === "incident" ? "initial" : "none"
-                }
               >
-                <Collapse in={props.values.call_type === "incident"}>
+                <Collapse in={!!props.values.call_type}>
                   <Link onClick={showPhoneModal}>
-                    <Alert status="error">
+                    {props.values.call_type === "incident" ? <Alert status="error">
                       <AlertIcon />
                       <AlertDescription>
                         Om ditt ärende är brådskande ber vid dig att kontakta
-                        oss via telefon, klicka här
+                        oss via telefon, klicka här!
                       </AlertDescription>
-                    </Alert>
+                    </Alert> : <Alert status="info">
+                      <AlertIcon />
+                      <AlertDescription>
+                        Du kan även nå oss via telefon, klicka här!
+                      </AlertDescription>
+                    </Alert>}
                   </Link>
                 </Collapse>
-                <PhoneModal
-                  isOpen={isPhoneModalOpen}
-                  onClose={hidePhoneModal}
-                />
               </GridItem>
 
               <GridItem>
@@ -466,7 +465,7 @@ export const FormLayout = () => {
                     <Button
                       w="40"
                       rightIcon={<ArrowForwardIcon />}
-                      colorScheme="blue"
+                      colorScheme="green"
                       isLoading={props.isSubmitting}
                       type="submit"
                       onClick={(e) => {
@@ -537,22 +536,12 @@ export const FormLayout = () => {
                   </VStack>
                 )}
               </GridItem>
-              <GridItem
-                colSpan={{
-                  base: 1,
-                  md: 2,
-                }}
-              >
-                <Link onClick={showPhoneModal}>
-                  <Alert status="info">
-                    <AlertIcon />
-                    <AlertDescription>
-                      Du kan även nå oss via telefon, klicka här!
-                    </AlertDescription>
-                  </Alert>
-                </Link>
-              </GridItem>
+
             </Grid>
+            <PhoneModal
+              isOpen={isPhoneModalOpen}
+              onClose={hidePhoneModal}
+            />
           </Form>
         );
       }}
