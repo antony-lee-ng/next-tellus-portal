@@ -45,9 +45,6 @@ const FileUpload: React.FC<{
         type="file"
         ref={inputRef}
         multiple
-        onChange={(e) => {
-          props.field.value = ["hello there"];
-        }}
       ></input>
       <Input
         onClick={() => {
