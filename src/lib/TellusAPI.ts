@@ -28,7 +28,13 @@ export class TellusAPI {
       logger.info("creating call");
       const { data } = await this.instance.post<IResult>(
         `/api/global/external_portal/create`,
-        await formSchema.validate(formData)
+        await formSchema.validate(formData),
+        {
+          headers: {
+            Accept: "application/json",
+            "Accept-Encoding": "identity", // https://github.com/axios/axios/issues/5298
+          },
+        }
       );
       logger.info(`Created ${data.result.number}`);
       return data;
