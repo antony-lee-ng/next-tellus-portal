@@ -54,7 +54,7 @@ export const PhoneModal: React.FC<{
     { name: "Södertälje sjukhus", number: "08 123 177 77" },
     {
       name: "Vårdaktörer med vårdavtal samt studenter",
-      number: "08 123 134 30",
+      number: "08 123 145 10",
     },
   ];
   return (
