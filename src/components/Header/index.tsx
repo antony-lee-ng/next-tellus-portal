@@ -57,7 +57,7 @@ export default function Header() {
         <chakra.div h="4.5rem" mx="auto" maxW="1200px">
           <Flex w="full" h="full" px="6" align="center" justify="space-between">
             <Flex align="center" h="40px" w="250px">
-              <Image src={`/${logo}`} objectFit="cover" />
+              <Image src={`/${logo}`} objectFit="contain" />
             </Flex>
 
             <Flex
