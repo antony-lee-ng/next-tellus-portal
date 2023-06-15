@@ -37,7 +37,6 @@ import { exec, spawn } from "child_process";
       shell: true,
       stdio: "inherit",
     });
-    ("C:/Users/adamm/Documents/dev/tellus/next-tellus-portal/build");
 
     child.on("close", async (code) => {
       console.log(`Moving files to "${TARGET_DIR}" this can take a while`);
